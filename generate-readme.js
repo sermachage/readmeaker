@@ -54,12 +54,18 @@ ${END_MARKER}`;
   const endIdx = existingContent.indexOf(END_MARKER);
 
   let updatedReadme;
-  if (startIdx !== -1 && endIdx !== -1) {
+  // Only replace if both markers exist and START_MARKER appears before END_MARKER
+  if (startIdx !== -1 && endIdx !== -1 && startIdx < endIdx) {
     updatedReadme =
       existingContent.slice(0, startIdx) +
       generatedBlock +
       existingContent.slice(endIdx + END_MARKER.length);
   } else {
+    if (startIdx !== -1 || endIdx !== -1) {
+      console.warn(
+        'Warning: README markers are missing or misordered. Appending auto-generated section instead of replacing.'
+      );
+    }
     updatedReadme = existingContent.trimEnd() + '\n\n' + generatedBlock + '\n';
   }
 
