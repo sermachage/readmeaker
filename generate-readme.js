@@ -59,14 +59,30 @@ ${END_MARKER}`;
     updatedReadme =
       existingContent.slice(0, startIdx) +
       generatedBlock +
+  const hasStart = startIdx !== -1;
+  const hasEnd = endIdx !== -1;
+
+  let updatedReadme;
+  if (hasStart && hasEnd && startIdx < endIdx) {
+    // Normal case: both markers present and in the correct order
+    updatedReadme =
+      existingContent.slice(0, startIdx) +
+      generatedBlock +
       existingContent.slice(endIdx + END_MARKER.length);
-  } else {
-    if (startIdx !== -1 || endIdx !== -1) {
-      console.warn(
-        'Warning: README markers are missing or misordered. Appending auto-generated section instead of replacing.'
-      );
-    }
+  } else if (!hasStart && !hasEnd) {
+    // No markers present: append a new auto-generated block
     updatedReadme = existingContent.trimEnd() + '\n\n' + generatedBlock + '\n';
+  } else {
+    // Orphaned or corrupted marker(s) detected: clean up and regenerate
+    console.warn(
+      'Warning: Detected orphaned or misordered auto-generated markers in README.md. ' +
+      'Cleaning them up and regenerating the auto-generated section.'
+    );
+    let cleanedContent = existingContent
+      .replace(START_MARKER, '')
+      .replace(END_MARKER, '');
+    cleanedContent = cleanedContent.trimEnd();
+    updatedReadme = cleanedContent + '\n\n' + generatedBlock + '\n';
   }
 
   fs.writeFileSync(readmePath, updatedReadme, 'utf8');
