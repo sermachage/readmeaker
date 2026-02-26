@@ -12,14 +12,17 @@ permissions:
 
 jobs:
   update-readme:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -27,18 +30,10 @@ jobs:
       - name: Generate README
         run: node generate-readme.js
 
-      - name: Fetch latest from remote
-        run: |
-          git fetch origin
-          git reset --hard origin/master
-
       - name: Commit and push README
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "chore: auto-update README"
-          git pull --rebase origin master  # Pull remote changes first
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/machage9603/readmeaker.git --force  # Force push to avoid conflicts
+          git diff --cached --quiet || git commit -m "chore: auto-update README"
+          git push
