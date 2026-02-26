@@ -52,6 +52,59 @@ Feedback is appreciated! Reach out on [Twitter](https://twitter.com/sermachage) 
 
 This readme was created with [READMEaker](https://readme.works/)
 
+
+## Auto-Generated Project Structure
+
+```
+- .eslintrc.json
+- .github/
+  - workflows/
+    - update.yml
+- .gitignore
+- CONTRIBUTE.md
+- README.md
+- app/
+  - ReadMeaker/
+    - ReadmeContext.tsx
+    - layout.tsx
+    - page.tsx
+  - error.tsx
+  - layout.tsx
+  - lib/
+    - utils.ts
+  - not-found.tsx
+  - page.tsx
+  - theme-provider.tsx
+  - ui/
+    - button.tsx
+    - card.tsx
+    - dropdown-menu.tsx
+    - fonts.ts
+    - global.css
+    - input.tsx
+    - tabs.tsx
+    - textarea.tsx
+    - toast.tsx
+    - toaster.tsx
+    - use-toast.ts
+- components.json
+- generate-readme.js
+- next.config.mjs
+- package.json
+- pnpm-lock.yaml
+- postcss.config.mjs
+- public/
+  - addsection.png
+  - ai.png
+  - download.png
+  - hero.jpeg
+  - logo.png
+  - preview.png
+- tailwind.config.ts
+- tsconfig.json
+
+```
+
 <!-- AUTO-GENERATED-STRUCTURE:START -->
 ## Auto-Generated Project Structure
 
